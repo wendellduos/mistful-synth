@@ -1,3 +1,10 @@
+const octaveFreqs = [
+  [
+    261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.0, 415.3, 440.0,
+    466.16, 493.88, 523.25, 554.37, 587.33, 622.25, 659.25,
+  ],
+];
+
 const notes = [
   { name: "c-4", freq: 261.63, keybind: "z" },
   { name: "c#4", freq: 277.18, keybind: "s" },
@@ -29,41 +36,66 @@ notes.forEach((note) => {
   }
 });
 
-//Listens for keyboard presses, changes button's background-color while key is pressed
+//Gets parameters selected in DOM
+// * Improve master volume behavior. Needs to work at any given moment
+const masterVolume = () => {
+  return document.getElementById("master-volume").value;
+};
 
+const selectedWaveform = () => {
+  return document.querySelector('input[name="waveform"]:checked').value;
+};
+
+//Initiates audio node
 const c = new AudioContext();
 let osc;
+let gain;
+
+//Listens for keyboard presses, changes button's background-color while key is pressed
 
 document.addEventListener("keydown", (key) => {
   const pressedKey = key.key;
 
   for (let note of notes) {
     if (pressedKey === note.keybind) {
-      osc = c.createOscillator();
-      osc.frequency.value = note.freq;
-      osc.connect(c.destination);
-      osc.start();
+      playNote(note.freq);
 
       document.querySelector(
         '[data-keybind="' + pressedKey + '"]'
-      ).style.backgroundColor = "red";
+      ).style.backgroundColor = "var(--pressed-key)";
     }
   }
   document.addEventListener("keyup", () => {
     for (let note of notes) {
       if (pressedKey === note.keybind) {
+        stopNote();
+
         const currentKey = document.querySelector(
           '[data-keybind="' + pressedKey + '"]'
         );
 
-        osc.stop();
-
         if (currentKey.className === "black-key keyboard-key") {
-          currentKey.style.backgroundColor = "#242424";
+          currentKey.style.backgroundColor = "var(--black-key)";
         } else {
-          currentKey.style.backgroundColor = "white";
+          currentKey.style.backgroundColor = "var(--white-key)";
         }
       }
     }
   });
 });
+
+function playNote(keyFreq) {
+  gain = c.createGain();
+  gain.gain.value = masterVolume();
+  gain.connect(c.destination);
+
+  osc = c.createOscillator();
+  osc.type = selectedWaveform();
+  osc.frequency.value = keyFreq;
+  osc.connect(gain);
+  osc.start();
+}
+
+function stopNote() {
+  osc.stop();
+}
