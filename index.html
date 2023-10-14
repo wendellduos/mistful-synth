@@ -5,8 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wistful - Synth</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;1,400&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <main>
+      <section id="parameters">
+        <h2>Parameters</h2>
+        <div id="waveform-container">
+          <h3 class="section-param-title">Waveform</h3>
+          <div id="input-container">
+            <div class="label-align">
+              <input
+                type="radio"
+                name="waveform"
+                id="sine"
+                value="sine"
+                checked
+              />
+              <label for="sine">SIN</label>
+            </div>
+            <div class="label-align">
+              <input
+                type="radio"
+                name="waveform"
+                id="triangle"
+                value="triangle"
+              />
+              <label for="triangle">TRI</label>
+            </div>
+            <div class="label-align">
+              <input type="radio" name="waveform" id="square" value="square" />
+              <label for="square">SQR</label>
+            </div>
+            <div class="label-align">
+              <input
+                type="radio"
+                name="waveform"
+                id="sawtooth"
+                value="sawtooth"
+              />
+              <label for="sawtooth">SAW</label>
+            </div>
+          </div>
+        </div>
+        <div class="label-align">
+          <label class="section-param-title" for="master-volume">Master</label>
+          <input
+            type="range"
+            orient="vertical"
+            id="master-volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.65"
+          />
+        </div>
+      </section>
+    </main>
     <div id="keyboard-keys"></div>
     <script src="script.js"></script>
   </body>
