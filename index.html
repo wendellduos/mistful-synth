@@ -3,71 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wistful - Synth</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;1,400&family=Young+Serif&display=swap"
-      rel="stylesheet"
-    />
+    <title>Synth</title>
   </head>
   <body>
     <main>
       <section id="parameters">
         <h2>Parameters</h2>
-        <div id="waveform-container">
-          <h3 class="section-param-title">Waveform</h3>
-          <div id="input-container">
-            <div class="label-align">
-              <input
-                type="radio"
-                name="waveform"
-                id="sine"
-                value="sine"
-                checked
-              />
-              <label for="sine">SIN</label>
-            </div>
-            <div class="label-align">
-              <input
-                type="radio"
-                name="waveform"
-                id="triangle"
-                value="triangle"
-              />
-              <label for="triangle">TRI</label>
-            </div>
-            <div class="label-align">
-              <input type="radio" name="waveform" id="square" value="square" />
-              <label for="square">SQR</label>
-            </div>
-            <div class="label-align">
-              <input
-                type="radio"
-                name="waveform"
-                id="sawtooth"
-                value="sawtooth"
-              />
-              <label for="sawtooth">SAW</label>
-            </div>
-          </div>
-        </div>
-        <div class="label-align">
-          <label class="section-param-title" for="master-volume">Master</label>
+        <label for="masterGain">Master Gain</label>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.3"
+          id="masterGain"
+        />
+        <hr />
+        <div id="adsr">
+          <h3>ADSR</h3>
+          <label for="attack">Attack</label>
           <input
             type="range"
-            orient="vertical"
-            id="master-volume"
             min="0"
             max="1"
             step="0.01"
-            value="0.65"
+            value="0"
+            id="attack"
+          />
+          <label for="decay">Decay</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0"
+            id="decay"
+          />
+          <label for="release">Release</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            id="release"
           />
         </div>
+        <hr />
+        <div id="unison">
+          <h3>Unison</h3>
+          <label for="unison-voices">Voices</label>
+          <input type="number" min="1" max="9" value="1" id="unison-voices" />
+          <label for="unison-detune">Detune</label>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="1"
+            value="0"
+            id="unison-detune"
+          />
+        </div>
+        <hr />
+        <div id="waveform">
+          <h3>Waveform</h3>
+          <label for="sine">Sine</label>
+          <input type="radio" name="waveform" value="sine" id="sine" checked />
+          <label for="triangle">Triangle</label>
+          <input type="radio" name="waveform" value="triangle" id="triangle" />
+          <label for="square">Square</label>
+          <input type="radio" name="waveform" value="square" id="square" />
+          <label for="sawtooth">Sawtooth</label>
+          <input type="radio" name="waveform" value="sawtooth" id="sawtooth" />
+        </div>
+        <hr />
+        <div id="transpose">
+          <h3>Transpose</h3>
+          <button type="button" id="transposeDown">-</button>
+          <input type="number" value="4" id="selectedScale" readonly />
+          <button type="button" id="transposeUp">+</button>
+        </div>
+      </section>
+      <hr />
+      <section id="effects">
+        <h2>Effects</h2>
       </section>
     </main>
-    <div id="keyboard-keys"></div>
+    <script src="data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
