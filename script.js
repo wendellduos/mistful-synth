@@ -1,4 +1,6 @@
-const c = new AudioContext();
+const c = new AudioContext({
+  sampleRate: 48000,
+});
 
 //Master gain controls
 const masterGain = c.createGain();
@@ -76,7 +78,38 @@ let selectedScale = () => {
   return Number(selectedScaleInput.value);
 };
 
-//Deals with keyboard presses
+//Vibrato
+
+const vibratoAmountCtrl = document.getElementById("vibratoAmount");
+const vibratoFadeInCtrl = document.getElementById("vibratoFadeIn");
+const vibratoSpeedCtrl = document.getElementById("vibratoSpeed");
+
+let vibratoAmount = Number(vibratoAmountCtrl.value);
+
+vibratoAmountCtrl.addEventListener("input", () => {
+  vibratoAmount = Number(vibratoAmountCtrl.value);
+});
+
+let vibratoFadeIn = Number(vibratoFadeInCtrl.value);
+
+vibratoFadeInCtrl.addEventListener("input", () => {
+  vibratoFadeIn = Number(vibratoFadeInCtrl.value);
+});
+
+let vibratoSpeed = Number(vibratoSpeedCtrl.value);
+
+vibratoSpeedCtrl.addEventListener("input", () => {
+  vibratoSpeed = Number(vibratoSpeedCtrl.value);
+});
+
+/*
+
+
+Note creation by keyboard press
+
+
+*/
+
 document.addEventListener("keydown", (key) => {
   const pressedKey = key.key.toLowerCase();
 
@@ -128,10 +161,30 @@ document.addEventListener("keydown", (key) => {
     let oscList = new Array(unisonVoices);
 
     function createOsc() {
+      const lfo = new OscillatorNode(c, {
+        frequency: vibratoSpeed,
+        type: "sine",
+      });
+
+      const vibratoVolume = new GainNode(c);
+
       const osc = new OscillatorNode(c, {
         frequency: frequencyRelatedToKey(),
         type: waveform(),
       });
+
+      lfo.connect(vibratoVolume);
+      lfo.start();
+      lfo.stop(now + duration);
+
+      //Vibrato Fade In
+      vibratoVolume.gain.setValueAtTime(0, now);
+      vibratoVolume.gain.linearRampToValueAtTime(
+        vibratoAmount,
+        now + vibratoFadeIn
+      );
+
+      vibratoVolume.connect(osc.detune);
       osc.connect(gain);
       osc.start();
       osc.stop(now + duration);
