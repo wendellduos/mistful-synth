@@ -21,7 +21,7 @@ let attack = Number(attackCtrl.value);
 let decay = Number(decayCtrl.value);
 let release = Number(releaseCtrl.value);
 
-attackCtrl.addEventListener("input", () => {
+attackCtrl.addEventListener("input", (input) => {
   attack = Number(attackCtrl.value);
 });
 
